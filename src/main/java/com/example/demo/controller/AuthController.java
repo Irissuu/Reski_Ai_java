@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.AuthRequest;
 import com.example.demo.dto.request.RegisterRequest;
 import com.example.demo.dto.response.UsuarioResponse;
-import com.example.demo.model.UsuarioJava;
+import com.example.demo.model.Usuario;
 import com.example.demo.service.TokenService;
 import com.example.demo.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ public class AuthController {
     @Operation(summary = "Registrar")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) {
-        var u = new UsuarioJava();
+        var u = new Usuario();
         u.setNome(req.nome());
         u.setEmail(req.email());
         u.setCpf(req.cpf().replaceAll("\\D",""));

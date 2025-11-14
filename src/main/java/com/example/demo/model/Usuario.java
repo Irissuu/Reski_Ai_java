@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Table(name = "USUARIO_RESKI")
-public class UsuarioJava {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

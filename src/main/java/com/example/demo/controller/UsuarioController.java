@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.UsuarioUpdateRequest;
 import com.example.demo.dto.response.UsuarioResponse;
-import com.example.demo.model.UsuarioJava;
+import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,7 +34,7 @@ public class UsuarioController {
         if (sort.toLowerCase().endsWith(",desc")) s = s.descending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, s);
-        Page<UsuarioJava> usuariosPage = usuarioService.readUsuarios(pageable);
+        Page<Usuario> usuariosPage = usuarioService.readUsuarios(pageable);
         Page<UsuarioResponse> responses = usuariosPage.map(UsuarioResponse::from);
         return ResponseEntity.ok(responses);
     }
@@ -42,7 +42,7 @@ public class UsuarioController {
     @Operation(summary = "Retorna um usuário por ID")
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponse> readUsuario(@PathVariable Long id) {
-        UsuarioJava usuario = usuarioService.readUsuarioById(id);
+        Usuario usuario = usuarioService.readUsuarioById(id);
         return (usuario != null)
                 ? ResponseEntity.ok(UsuarioResponse.from(usuario))
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -54,12 +54,12 @@ public class UsuarioController {
             @PathVariable Long id,
             @Valid @RequestBody UsuarioUpdateRequest request
     ) {
-        UsuarioJava parcial = new UsuarioJava();
+        Usuario parcial = new Usuario();
         parcial.setNome(request.nome());
         parcial.setEmail(request.email());
         parcial.setSenha(request.senha());
 
-        UsuarioJava salvo = usuarioService.updateUsuario(id, parcial);
+        Usuario salvo = usuarioService.updateUsuario(id, parcial);
         return (salvo != null)
                 ? ResponseEntity.ok(UsuarioResponse.from(salvo))
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -68,7 +68,7 @@ public class UsuarioController {
     @Operation(summary = "Exclui um usuário por ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-        UsuarioJava existente = usuarioService.readUsuarioById(id);
+        Usuario existente = usuarioService.readUsuarioById(id);
         if (existente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
