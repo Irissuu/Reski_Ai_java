@@ -38,7 +38,11 @@ public class SecurityConfig {
 
                 .requestMatchers("/h2-console/**").permitAll()
 
-                .anyRequest().authenticated()
+                .requestMatchers("/chat").permitAll()
+                .requestMatchers("/objetivos", "/objetivos/**").permitAll()
+                .requestMatchers("/trilhas", "/trilhas/**").permitAll()
+
+                        .anyRequest().authenticated()
         );
 
         http.headers(h -> h.frameOptions(f -> f.disable()));

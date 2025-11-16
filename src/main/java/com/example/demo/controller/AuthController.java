@@ -11,8 +11,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -50,20 +52,44 @@ public class AuthController {
                 .body(Map.of("token", token, "usuario", UsuarioResponse.from(salvo)));
     }
 
+
     @Operation(summary = "Login (email + senha)")
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthRequest req) {
-        Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.email(), req.senha()));
-        var usuario = usuarioService.readUsuarioByEmail(auth.getName());
+        try {
+            Authentication auth = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(req.email(), req.senha())
+            );
 
-        var token = tokenService.generateAccessToken(usuarioService.toUserDetails(usuario), usuario.getCpf());
-        var cookie = ResponseCookie.from("access_token", token).httpOnly(true).path("/").build();
+            var usuario = usuarioService.readUsuarioByEmail(auth.getName());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(Map.of("token", token, "usuario", UsuarioResponse.from(usuario)));
+            var token = tokenService.generateAccessToken(
+                    usuarioService.toUserDetails(usuario),
+                    usuario.getCpf()
+            );
+            var cookie = ResponseCookie.from("access_token", token)
+                    .httpOnly(true)
+                    .path("/")
+                    .build();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(Map.of("token", token, "usuario", UsuarioResponse.from(usuario)));
+
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(401).body(
+                    Map.of("error", "Email ou senha inválidos")
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(
+                    Map.of("error", "Erro interno ao tentar autenticar")
+            );
+        }
     }
+
+
 
     @Operation(summary = "Me (dados do usuário atual)")
     @GetMapping("/me")
