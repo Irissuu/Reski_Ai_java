@@ -35,7 +35,7 @@ O sistema permite que o usuário cadastre seu perfil, habilidades e objetivos de
 
 ### 1. Clone o repositório
 ```text
-https://github.com/Irissuu/Reski_Ai_java.git
+git clone https://github.com/Irissuu/Reski_Ai_java.git
 ```
 
 ### 2. Gere uma chave JWT Key no PowerShell
