@@ -48,7 +48,7 @@ public class UsuarioController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @Operation(summary = "Atualiza um usuário")
+    @Operation(summary = "Atualiza um usuário (ao atualizar faça o login novamente)")
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponse> updateUsuario(
             @PathVariable Long id,
