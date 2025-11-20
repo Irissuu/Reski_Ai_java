@@ -164,8 +164,17 @@ spring.flyway.baseline-version=0
   "email": "karina@gmail.com",
   "senha": "MusgoCosmico"
 }
-
 ```
+
+### PUT /usuarios/{id}
+```text
+{
+  "nome": "Karina",
+  "email": "karina@gmail.com",
+  "senha": "girafales"
+}
+```
+
 ## ⋆˚꩜｡ OBJETIVO
 ### POST /objetivos
 ```text
