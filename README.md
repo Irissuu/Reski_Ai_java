@@ -14,7 +14,7 @@ O sistema permite que o usuário cadastre seu perfil, habilidades e objetivos de
 
 ## 🎬 Vídeos
 
-> <a href="">Vídeo Picth</a> </br>
+> <a href="https://www.youtube.com/watch?v=2dg4Xi5Dn_M">Vídeo Picth</a> </br>
 > <a href="">Vídeo Demonstrativo</a>
 
 ---
